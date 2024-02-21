@@ -14,15 +14,22 @@ The default hotkeys are as follows:
 1. Apply gamma transformation:
 
  - Win+F2
+   
     _or_
+   
  - Win+Shift+2
 
-1. Revert gamma transformation (When viewing HDR content):
+2. Revert gamma transformation (When viewing HDR content):
 
  - Win+F1
+   
     _or_
+  
  - Win+Shift+1
 
+3. Restart script (Used for reloading SDR nits and gamma value changes after setup)
+
+- Win+Shift+3
 
 ## SDR White nits guide:
 
