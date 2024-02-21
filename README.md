@@ -72,13 +72,14 @@ color calibration when applying the gamma transformation will fix this issue wit
 
 ## Uninstallation
 
-#### Run Uninstall.bat as administrator, and it should remove the task from task scheduler.
+#### Run Uninstall.bat as administrator, and it should remove the task from task scheduler. 
+#### The script (if running) can be closed from the system tray in your taskbar by right-clicking the green "H" icon.
 
-## Notes
+## Notes/Troubleshooting
 
-- The gamma ramp correction will persist when toggling HDR (including via the keyboard shortcut), making SDR appear darker. When disabling HDR, make sure to revert the gamma correction using the hotkey. Likewise, when re-enabling HDR, you have to re-apply the gamma correction again. If you don't have an SDR color profile, press "Add" and select _sRGB IEC61966-2.1_ as your default profile.
+- The gamma ramp correction will persist when toggling HDR (including via the keyboard shortcut), making SDR appear darker. When disabling HDR, make sure to revert the gamma correction using the hotkey. Likewise, when re-enabling HDR, you have to re-apply the gamma correction again.
 - If you have an NVIDIA GPU, make sure the NVCP desktop color settings is set to "Accurate" or "Enhanced" mode; the correction will not apply in "Reference" mode.
-- Pixel values above diffuse SDR white are untouched; a soft shoulder was added toward unity to blend the curve mapping with HDR values
+- Pixel values above diffuse SDR white are untouched; a soft shoulder was added toward unity to blend the curve mapping with HDR values (Not done by me, all credit goes to [dylanraga](https://github.com/dylanraga))
 
 <hr>
 
