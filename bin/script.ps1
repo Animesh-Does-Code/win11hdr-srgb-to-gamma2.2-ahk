@@ -31,7 +31,13 @@ if ($isAdmin -ne 'True') {
     Write-Output "
 Warning! SETUP.bat is running without administrator rights, please run as administrator for full functionality.
     "
-    if (!$Running) {
+    $exists = Get-ScheduledTask -TaskName "Apply sRGB to Gamma LUT" -ErrorAction SilentlyContinue
+    if ($exists) {
+        Write-Output "Restarting existing task to apply changes...
+"
+        schtasks /run /tn "\Apply sRGB to Gamma LUT"
+    }
+    elseif (!$Running) {
        Write-Output "Running HDRGammaFix.exe..."
        & $PSScriptRoot\HDRGammaFix.exe
     } else {
@@ -104,7 +110,7 @@ $existingTask = Get-ScheduledTask -TaskName $taskName -ErrorAction SilentlyConti
 $exeFile = "HDRGammaFix.exe"
 $action = New-ScheduledTaskAction -Execute $exeFile -WorkingDirectory $PSScriptRoot
 $trigger = New-ScheduledTaskTrigger -AtLogOn
-$settings = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries
+$settings = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -ExecutionTimeLimit 0 -MultipleInstances Parallel
 
 function checktask() {
     if ($existingTask -ne $null) {
