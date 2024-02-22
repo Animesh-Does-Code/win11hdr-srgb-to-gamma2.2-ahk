@@ -1,12 +1,13 @@
-$SDRValue = Read-Host "
-Please enter your SDR content brightness slider value 
+function config() {
+    $SDRValue = Read-Host "
+Please enter your Windows' SDR content brightness slider value (Should be a number from 0 to 100)
 (See README for more info)
 "
 While (!$SDRValue) {
     Write-Output "
 No value entered, please try again"
     $SDRValue = Read-Host "
-Please enter your SDR content brightness slider value 
+Please enter your Windows' SDR content brightness slider value (Should be a number from 0 to 100)
 (See README for more info)
 "
 } 
@@ -23,6 +24,19 @@ Please enter your preferred Gamma (Commonly 2.2 or 2.4)
 "
 }
 $gamma | Out-File -FilePath $PSScriptRoot\gammaval
+}
+
+$templut = Get-Item $PSScriptRoot\templut -ErrorAction SilentlyContinue
+if ($templut) {
+    $rerun = Read-Host "
+Setup was already run before, change SDR brightness and gamma values? (Answer 'Yes' or 'No')
+"
+    if ($rerun -match 'Y') {
+    config
+    } 
+} else {
+    config
+}
 
 $Running = Get-Process HDRGammaFix -ErrorAction SilentlyContinue
 $isAdmin = (New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
@@ -33,7 +47,7 @@ Warning! SETUP.bat is running without administrator rights, please run as admini
     "
     $exists = Get-ScheduledTask -TaskName "Apply sRGB to Gamma LUT" -ErrorAction SilentlyContinue
     if ($exists) {
-        Write-Output "Restarting existing task to apply changes...
+        Write-Output "Restarting existing task to apply any changes...
 "
         schtasks /run /tn "\Apply sRGB to Gamma LUT"
     }
@@ -41,13 +55,13 @@ Warning! SETUP.bat is running without administrator rights, please run as admini
        Write-Output "Running HDRGammaFix.exe..."
        & $PSScriptRoot\HDRGammaFix.exe
     } else {
-       Write-Output "Trying to restart HDRGammaFix.exe..."
+       Write-Output "Trying to restart HDRGammaFix.exe to apply any changes..."
        try {
        $Running | Stop-Process -Force -ErrorAction Stop
     } catch {
         Write-Output "
 Failed! Couldn't restart HDRGammaFix.exe since it was running as administrator! 
-Use hotkey Win+Shift+3 to restart script manually for changes to take effect.
+Use hotkey Win+Shift+3 to restart script manually for any changes to take effect.
 "
        exit
     }  
@@ -72,13 +86,6 @@ Reload Windows color calibration when applying gamma transformation? (Enter 'Yes
 "
 }
 if ($ReloadCal -match 'Y') {
-    Set-Content -Path $PSScriptRoot\apply.vbs -Value 'Set shell = CreateObject("Wscript.Shell")
-shell.run "schtasks /run /tn ""\Microsoft\Windows\WindowsColorSystem\Calibration Loader""", 0, True
-shell.run "dispwin.exe templut", 0, True
-'
-    Set-Content -Path $PSScriptRoot\restore.vbs -Value 'Set shell = CreateObject("Wscript.Shell")
-shell.run "schtasks /run /tn ""\Microsoft\Windows\WindowsColorSystem\Calibration Loader""", 0, True
-'
     Write-Output "
 Reloading Windows color calibration requires running the .exe script as administrator when running it manually. 
 The Windows startup task (If created) runs as administrator by default on startup, without triggering UAC."
@@ -87,9 +94,6 @@ Press any key to continue setup...
 '
     $null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown')
 } else {
-    Set-Content -Path $PSScriptRoot\apply.vbs -Value 'Set shell = CreateObject("Wscript.Shell")
-shell.run "dispwin.exe templut", 0, True'
-    Set-Content -Path $PSScriptRoot\restore.vbs -Value ''
     Write-Output "
 Continuing regular setup...
 "
@@ -110,7 +114,8 @@ $existingTask = Get-ScheduledTask -TaskName $taskName -ErrorAction SilentlyConti
 $exeFile = "HDRGammaFix.exe"
 $action = New-ScheduledTaskAction -Execute $exeFile -WorkingDirectory $PSScriptRoot
 $trigger = New-ScheduledTaskTrigger -AtLogOn
-$settings = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -ExecutionTimeLimit 0 -MultipleInstances Parallel
+$settings = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -ExecutionTimeLimit 0
+$settings.CimInstanceProperties.Item('MultipleInstances').Value = 3
 
 function checktask() {
     if ($existingTask -ne $null) {

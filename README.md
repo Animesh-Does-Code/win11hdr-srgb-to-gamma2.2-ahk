@@ -4,8 +4,9 @@
 #### dylanraga's original repo contains a great explanation on what is causing a "washed out" look or raised black levels when viewing SDR or AutoHDR content in Windows' HDR mode, and has some alternative workarounds for the issue.
 
 #### This fork uses an AutoHotkey script + ArgyllCMS `dispwin` workaround heavily based on [mspeedo](https://github.com/mspeedo)'s .ahk [script](https://github.com/dylanraga/win11hdr-srgb-to-gamma2.2-icm/issues/7), which is based on dylanraga's workarounds.
-#### Using AutoHotkey allows fast toggling of the gamma transformation, which is useful because the gamma correction can be detrimental to real HDR content, which do not suffer from the same issue this workaround tackles.
-#### This method also optionally allows reloading Windows' color calibration with the hotkeys. See [Windows color calibration reload function](https://github.com/Animesh-Does-Code/win11hdr-srgb-to-gamma2.2-ahk?tab=readme-ov-file#windows-color-calibration-reload-function) below for more info.
+
+Using AutoHotkey allows fast toggling of the gamma transformation, which is useful because the gamma correction can be detrimental to real HDR content, which do not suffer from the same issue this workaround tackles.
+This method also optionally allows reloading Windows' color calibration with the hotkeys. See [Windows color calibration reload function](https://github.com/Animesh-Does-Code/win11hdr-srgb-to-gamma2.2-ahk?tab=readme-ov-file#windows-color-calibration-reload-function) below for more info.
 
 ## Installation and Usage:
 
@@ -21,7 +22,7 @@
 
 ### Default Hotkeys
 
-#### The default hotkeys are as follows:
+The default hotkeys are as follows:
 
 #### 1. Apply gamma transformation:
 
@@ -39,7 +40,7 @@
      
    - `Win+Shift+1`
 
-#### 3. Restart script (Used for reloading SDR nits and gamma value changes after setup)
+#### 3. Restart script: (Used for reloading SDR nits and gamma value changes after setup)
 
    - `Win+Shift+3`
 
@@ -62,8 +63,9 @@ color calibration when applying the gamma transformation will fix this issue wit
 
 ## Uninstallation
 
-#### Run Uninstall.bat as administrator, and it should remove the task from task scheduler. 
-#### The script (if running) can be closed from the system tray in your taskbar by right-clicking the green "H" icon.
+- Run Uninstall.bat in the "uninstall" folder as administrator, and it should remove the task from task scheduler, if it exists.
+
+- The script (if running) can be closed from the system tray in your taskbar by right-clicking the green "H" icon.
 
 ## Notes/Troubleshooting
 

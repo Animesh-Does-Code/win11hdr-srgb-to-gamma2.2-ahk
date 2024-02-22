@@ -7,7 +7,7 @@
 3. The script will start running and can be controlled with hotkeys.
 4. You can also run the script manually from HDRGammaFix.exe, but only after the initial setup.
 
-- SETUP.bat needs to be run again if SDR white luminance or gamma needs to be changed.
+- SETUP.bat needs to be run again if SDR content brightness or gamma needs to be changed.
 
 ## Default Hotkeys
 
@@ -29,7 +29,7 @@ The default hotkeys are as follows:
   
  - Win+Shift+1
 
-3. Restart script (Used for reloading SDR nits and gamma value changes after setup)
+3. Restart script: (Used for reloading SDR nits and gamma value changes after setup)
 
 - Win+Shift+3
 
@@ -55,4 +55,4 @@ color calibration when applying the gamma transformation will fix this issue wit
 
 ## Uninstallation
 
-Run Uninstall.bat as administrator, and it should remove the task from task scheduler.
+Run Uninstall.bat in the "uninstall" folder as administrator, and it should remove the task from task scheduler.

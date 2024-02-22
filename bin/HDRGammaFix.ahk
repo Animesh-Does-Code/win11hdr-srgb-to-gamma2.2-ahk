@@ -18,23 +18,24 @@ global c3 := (2392 / 4096) * 32
 
 ;------------------ Load Calibration ------------------------------------------------------
 
-FileReadLine, whiteLuminance, SDRWhite, 1
-blackLuminance := 0
-FileReadLine, gamma, gammaval, 1
-CREATE_LUT_FILE(whiteLuminance,blackLuminance,gamma)
-Run, apply.vbs
+if (FileExist("gammaval") and FileExist("SDRWhite")) {
+  FileReadLine, whiteLuminance, SDRWhite, 1
+  blackLuminance := 0
+  FileReadLine, gamma, gammaval, 1
+  CREATE_LUT_FILE(whiteLuminance,blackLuminance,gamma)
+}
+apply(A_IsAdmin)
 
 ;------------------ LUT CALIBRATION CURVES HOTKEYS----------------------------------------
 
 #F1::
 #+1::
-  ResetCalibrationCurve()
-  Run, restore.vbs
+  ResetCalibrationCurve(A_IsAdmin)
 Return
 
 #F2::
 #+2::
-  Run, apply.vbs
+  apply(A_IsAdmin)
 Return
 
 #+3::
@@ -42,12 +43,22 @@ Return
 
 ;------------------ LUT CALIBRATION CURVES FUNCTIONS -------------------------------------
 
-ResetCalibrationCurve()
-{
+ResetCalibrationCurve(admin) {
+  if (admin) {
+  Run, schtasks /run /tn "\Microsoft\Windows\WindowsColorSystem\Calibration Loader", , Hide
+  }
   path = -c
   Run, dispwin.exe %path%, , Hide
 }
 Return
+
+apply(admin) {
+  if (admin) {
+  Run, schtasks /run /tn "\Microsoft\Windows\WindowsColorSystem\Calibration Loader", , Hide
+  sleep, 100
+ }
+  Run, dispwin.exe templut, , Hide
+}
 
 CREATE_LUT_FILE(whiteLuminance, blackLuminance, gamma) {
 
@@ -88,6 +99,8 @@ calcurve := calcurve "`n" "END_DATA"
 
 FileDelete templut
 FileAppend % calcurve, templut
+FileDelete SDRWhite
+FileDelete gammaval
 
 Return
 }
