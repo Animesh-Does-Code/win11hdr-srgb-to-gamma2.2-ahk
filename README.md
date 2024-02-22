@@ -13,7 +13,7 @@
 2. Run `SETUP.bat` as administrator.
    - `SETUP.bat` can also be run without admin permissions, but without the ability to create startup tasks.
 3. Follow the prompts that appear and enter your preferred values.
-   - Your SDR content brightness slider value can be found in Windows' settings. For info, go to the [SDR content brightness slider guide.](https://github.com/Animesh-Does-Code/win11hdr-srgb-to-gamma2.2-ahk?tab=readme-ov-file#sdr-content-brightness-slider-guide) below.
+   - Your SDR content brightness slider value can be found in Windows' settings. For info, go to the [SDR content brightness slider guide](https://github.com/Animesh-Does-Code/win11hdr-srgb-to-gamma2.2-ahk?tab=readme-ov-file#sdr-content-brightness-slider-guide) below.
 5. The script will start running and can be controlled with hotkeys.
 6. You can also run the script manually from `HDRGammaFix.exe`, but only after the initial setup.
 
