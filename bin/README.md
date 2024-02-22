@@ -55,4 +55,6 @@ color calibration when applying the gamma transformation will fix this issue wit
 
 ## Uninstallation
 
-Run Uninstall.bat in the "uninstall" folder as administrator, and it should remove the task from task scheduler.
+- Run Uninstall.bat in the "uninstall" folder as administrator, and it should remove the task from task scheduler, if it exists.
+
+- The script (if running) can be closed from the system tray in your taskbar by right-clicking the green "H" icon.

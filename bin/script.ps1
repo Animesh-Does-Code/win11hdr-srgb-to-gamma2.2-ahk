@@ -26,8 +26,9 @@ Please enter your preferred Gamma (Commonly 2.2 or 2.4)
 $gamma | Out-File -FilePath $PSScriptRoot\gammaval
 }
 
-$templut = Get-Item $PSScriptRoot\templut -ErrorAction SilentlyContinue
-if ($templut) {
+$config = Get-Item $PSScriptRoot\config -ErrorAction SilentlyContinue
+$configwithReload = Get-Item $PSScriptRoot\configwithReload -ErrorAction SilentlyContinue
+if ($config -or $configwithReload) {
     $rerun = Read-Host "
 Setup was already run before, change SDR brightness and gamma values? (Answer 'Yes' or 'No')
 "
@@ -86,14 +87,16 @@ Reload Windows color calibration when applying gamma transformation? (Enter 'Yes
 "
 }
 if ($ReloadCal -match 'Y') {
+    Out-File $PSScriptRoot\reloadColor
     Write-Output "
-Reloading Windows color calibration requires running the .exe script as administrator when running it manually. 
+Reloading Windows color calibration requires running the .exe script as administrator when running it manually.
 The Windows startup task (If created) runs as administrator by default on startup, without triggering UAC."
     Write-Host -NoNewLine '
 Press any key to continue setup...
 '
     $null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown')
 } else {
+    Out-File $PSScriptRoot\noReload
     Write-Output "
 Continuing regular setup...
 "

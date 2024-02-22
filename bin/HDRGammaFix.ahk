@@ -18,24 +18,46 @@ global c3 := (2392 / 4096) * 32
 
 ;------------------ Load Calibration ------------------------------------------------------
 
+if (FileExist("reloadColor")) {
+FileMove, config, configwithReload, 1
+path = configwithReload
+} else if (FileExist("noReload")) {
+FileMove, configwithReload, config, 1
+path = config
+} else if (FileExist("configwithReload")) {
+path = configwithReload
+} else {
+path = config
+}
+
+FileDelete reloadColor
+FileDelete noReload
+
 if (FileExist("gammaval") and FileExist("SDRWhite")) {
   FileReadLine, whiteLuminance, SDRWhite, 1
   blackLuminance := 0
   FileReadLine, gamma, gammaval, 1
-  CREATE_LUT_FILE(whiteLuminance,blackLuminance,gamma)
+  CREATE_LUT_FILE(whiteLuminance,blackLuminance,gamma,path)
 }
-apply(A_IsAdmin)
+
+if (FIleExist("configwithReload")) {
+  admin := A_IsAdmin
+} else {
+  admin := ""
+}
+
+apply(admin, path)
 
 ;------------------ LUT CALIBRATION CURVES HOTKEYS----------------------------------------
 
 #F1::
 #+1::
-  ResetCalibrationCurve(A_IsAdmin)
+  ResetCalibrationCurve(admin)
 Return
 
 #F2::
 #+2::
-  apply(A_IsAdmin)
+  apply(admin, path)
 Return
 
 #+3::
@@ -47,20 +69,20 @@ ResetCalibrationCurve(admin) {
   if (admin) {
   Run, schtasks /run /tn "\Microsoft\Windows\WindowsColorSystem\Calibration Loader", , Hide
   }
-  path = -c
-  Run, dispwin.exe %path%, , Hide
+  clear = -c
+  Run, dispwin.exe %clear%, , Hide
 }
 Return
 
-apply(admin) {
+apply(admin, path) {
   if (admin) {
   Run, schtasks /run /tn "\Microsoft\Windows\WindowsColorSystem\Calibration Loader", , Hide
   sleep, 100
  }
-  Run, dispwin.exe templut, , Hide
+  Run, dispwin.exe %path%, , Hide
 }
 
-CREATE_LUT_FILE(whiteLuminance, blackLuminance, gamma) {
+CREATE_LUT_FILE(whiteLuminance, blackLuminance, gamma, path) {
 
 calcurve = 
 (
@@ -97,8 +119,8 @@ Loop, 1023
 
 calcurve := calcurve "`n" "END_DATA"
 
-FileDelete templut
-FileAppend % calcurve, templut
+FileDelete %path%
+FileAppend % calcurve, %path%
 FileDelete SDRWhite
 FileDelete gammaval
 
