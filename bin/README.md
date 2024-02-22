@@ -2,6 +2,8 @@
 
 1. Run SETUP.bat as administrator
 2. Follow the prompts that appear and enter your preferred values.
+   - Your SDR content brightness slider value can be found in Windows' settings. Further in the 
+   README are links to tutorials on how to find it, in case it's needed. 
 3. The script will start running and can be controlled with hotkeys.
 4. You can also run the script manually from HDRGammaFix.exe, but only after the initial setup.
 
@@ -31,7 +33,8 @@ The default hotkeys are as follows:
 
 - Win+Shift+3
 
-## SDR White nits guide:
+
+## SDR content brightness slider guide:
 
 Find your SDR content brightness slider:
 
@@ -39,17 +42,7 @@ Find your SDR content brightness slider:
 
 - Windows 10: https://www.tenforums.com/tutorials/146775-how-change-hdr-sdr-brightness-balance-level-windows-10-a.html
 
-Use this table to know what nits value you should use according to your preferred slider value:
-
-| SDR Content brightness value | SDR white screen luminance |
-| ---------------------------- | -------------------------- |
-| 0                            | 80 nits                    |
-| 5                            | 100 nits                   |
-| 10                           | 120 nits                   |
-| 30                           | 200 nits                   |
-| 55                           | 300 nits                   |
-| 80                           | 400 nits                   |
-| 100                          | 480 nits                   |
+After you've set the slider to where you want it, enter the number that pops up when hovering over the slider's button in the setup.
 
 
 ## Windows Color Calibration reload function info

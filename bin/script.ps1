@@ -1,16 +1,16 @@
-$SDRWhite = Read-Host "
-Please enter your SDR white luminance in nits 
-(*Must* correspond to your 'SDR content brightness' slider value in Windows, see README for more info)
+$SDRValue = Read-Host "
+Please enter your SDR content brightness slider value 
+(See README for more info)
 "
-While (!$SDRWhite) {
+While (!$SDRValue) {
     Write-Output "
 No value entered, please try again"
-    $SDRWhite = Read-Host "
-Please enter your SDR white luminance in nits 
-(*Must* correspond to your 'SDR content brightness' slider value in Windows)
+    $SDRValue = Read-Host "
+Please enter your SDR content brightness slider value 
+(See README for more info)
 "
 } 
-$SDRWhite | Out-File -FilePath $PSScriptRoot\SDRWhite
+([int]$SDRValue*4)+80 | Out-File $PSScriptRoot\SDRWhite
 
 $gamma = Read-Host "
 Please enter your preferred Gamma (Commonly 2.2 or 2.4)

@@ -5,7 +5,7 @@
 
 #### This fork uses an AutoHotkey script + ArgyllCMS `dispwin` workaround heavily based on [mspeedo](https://github.com/mspeedo)'s .ahk [script](https://github.com/dylanraga/win11hdr-srgb-to-gamma2.2-icm/issues/7), which is based on dylanraga's workarounds.
 #### Using AutoHotkey allows fast toggling of the gamma transformation, which is useful because the gamma correction can be detrimental to real HDR content, which do not suffer from the same issue this workaround tackles.
-#### This method also optionally allows reloading Windows' color calibration with the hotkeys. See [Windows color calibration reload function](https://github.com/Animesh-Does-Code/win11hdr-srgb-to-gamma2.2-ahk?tab=readme-ov-file#windows-color-calibration-reload-function) for more info.
+#### This method also optionally allows reloading Windows' color calibration with the hotkeys. See [Windows color calibration reload function](https://github.com/Animesh-Does-Code/win11hdr-srgb-to-gamma2.2-ahk?tab=readme-ov-file#windows-color-calibration-reload-function) below for more info.
 
 ## Installation and Usage:
 
@@ -13,11 +13,11 @@
 2. Run `SETUP.bat` as administrator.
    - `SETUP.bat` can also be run without admin permissions, but without the ability to create startup tasks.
 3. Follow the prompts that appear and enter your preferred values.
-   - "SDR white luminance" needs to be set correctly according to your SDR content brightness in Windows. For info, go to the [SDR White nits guide.](https://github.com/Animesh-Does-Code/win11hdr-srgb-to-gamma2.2-ahk?tab=readme-ov-file#sdr-white-nits-guide)
+   - Your SDR content brightness slider value can be found in Windows' settings. For info, go to the [SDR content brightness slider guide.](https://github.com/Animesh-Does-Code/win11hdr-srgb-to-gamma2.2-ahk?tab=readme-ov-file#sdr-content-brightness-slider-guide) below.
 5. The script will start running and can be controlled with hotkeys.
 6. You can also run the script manually from `HDRGammaFix.exe`, but only after the initial setup.
 
-`SETUP.bat` needs to be run again if SDR white nits or gamma needs to be changed.
+`SETUP.bat` needs to be run again if SDR content brightness value or gamma need to be changed.
 
 ### Default Hotkeys
 
@@ -43,7 +43,7 @@
 
    - `Win+Shift+3`
 
-## SDR White nits guide
+## SDR content brightness slider guide
 
 #### Find your SDR content brightness slider:
 
@@ -51,17 +51,7 @@
 
 - Windows 10: https://www.tenforums.com/tutorials/146775-how-change-hdr-sdr-brightness-balance-level-windows-10-a.html
 
-#### Use this table to know what nits value you should use according to your preferred slider value:
-
-| SDR Content brightness value | SDR white screen luminance |
-| ---------------------------- | -------------------------- |
-| 0                            | 80 nits                    |
-| 5                            | 100 nits                   |
-| 10                           | 120 nits                   |
-| 30                           | 200 nits                   |
-| 55                           | 300 nits                   |
-| 80                           | 400 nits                   |
-| 100                          | 480 nits                   |
+#### After you've set the slider to where you want it, enter the number that pops up when hovering over the slider's button in the setup.
 
 ## Windows Color Calibration reload function
 
