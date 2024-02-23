@@ -125,7 +125,7 @@ $trigger.Subscription =
 <QueryList><Query Id="0" Path="System"><Select Path="System">*[System[Provider[@Name='Microsoft-Windows-Kernel-Power'] and EventID=566]]</Select></Query></QueryList>
 "@
 $trigger.Enabled = $true
-$trigger.Delay = 'PT5S'
+$trigger.Delay = 'PT7S'
 $triggers += $trigger
 $settings = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -ExecutionTimeLimit 0 -Priority 4
 $settings.CimInstanceProperties.Item('MultipleInstances').Value = 3
