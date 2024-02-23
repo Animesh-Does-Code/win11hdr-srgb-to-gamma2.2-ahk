@@ -10,13 +10,14 @@ This method also optionally allows reloading Windows' color calibration with the
 
 ## Installation and Usage:
 
-1. Download [HDRGammaFix.zip](https://github.com/Animesh-Does-Code/win11hdr-srgb-to-gamma2.2-icm/releases) from the releases page and extract it to an easily accessible location where it can reside permanently.
+1. Download [HDRGammaFix.zip](https://github.com/Animesh-Does-Code/win11hdr-srgb-to-gamma2.2-ahk/releases/latest/download/HDRGammaFix.zip) from the releases page and extract it to an easily accessible location where it can reside permanently.
 2. Run `SETUP.bat` as administrator.
    - `SETUP.bat` can also be run without admin permissions, but without the ability to create startup tasks.
 3. Follow the prompts that appear and enter your preferred values.
    - Your SDR content brightness slider value can be found in Windows' settings. For info, go to the [SDR content brightness slider guide](https://github.com/Animesh-Does-Code/win11hdr-srgb-to-gamma2.2-ahk?tab=readme-ov-file#sdr-content-brightness-slider-guide) below.
 5. The script will start running and can be controlled with hotkeys.
-6. You can also run the script manually from `HDRGammaFix.exe`, but only after the initial setup.
+   - Use `Win+F1` to disable gamma changes and `Win+F2` to apply them again.
+7. You can also run the script manually from `HDRGammaFix.exe`, but only after the initial setup.
 
 `SETUP.bat` needs to be run again if SDR content brightness value or gamma need to be changed.
 
@@ -44,6 +45,16 @@ The default hotkeys are as follows:
 
    - `Win+Shift+3`
 
+<br>
+
+## Uninstallation
+
+- Run Uninstall.bat in the "uninstall" folder as administrator, and it should remove the task from task scheduler, if it exists.
+
+- The script (if running) can be closed from the system tray in your taskbar by right-clicking the green "H" icon.
+
+<br>
+
 ## SDR content brightness slider guide
 
 #### Find your SDR content brightness slider:
@@ -60,12 +71,6 @@ If you've used Windows' HDR Calibration app (Windows 11 only) and applied a prof
 
 This can happen after your display goes to sleep mode and wakes up again, or after your PC enters sleep mode and resumes. Reloading Windows' 
 color calibration when applying the gamma transformation will fix this issue without having to open Display settings or Color management.
-
-## Uninstallation
-
-- Run Uninstall.bat in the "uninstall" folder as administrator, and it should remove the task from task scheduler, if it exists.
-
-- The script (if running) can be closed from the system tray in your taskbar by right-clicking the green "H" icon.
 
 ## Notes/Troubleshooting
 
