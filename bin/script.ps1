@@ -90,7 +90,7 @@ if ($ReloadCal -match 'Y') {
     Out-File $PSScriptRoot\reloadColor
     Write-Output "
 Reloading Windows color calibration requires running the .exe script as administrator when running it manually.
-The Windows startup task (If created) runs as administrator by default on startup, without triggering UAC."
+If the hotkey script is enabled on startup, it will run as administrator by default, without triggering UAC."
     Write-Host -NoNewLine '
 Press any key to continue setup...
 '
@@ -109,15 +109,25 @@ Enable hotkey script on Windows startup? (Enter 'Yes' or 'No')
     Write-Output "
 No value was entered, please try again"
     $AutoStart = Read-Host "
-Enable hotkey script on startup? (Enter 'Yes' or 'No')
+Enable hotkey script on Windows startup? (Enter 'Yes' or 'No')
 "
 }
 $taskName = "Apply sRGB to Gamma LUT"
 $existingTask = Get-ScheduledTask -TaskName $taskName -ErrorAction SilentlyContinue
 $exeFile = "HDRGammaFix.exe"
 $action = New-ScheduledTaskAction -Execute $exeFile -WorkingDirectory $PSScriptRoot
-$trigger = New-ScheduledTaskTrigger -AtLogOn
-$settings = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -ExecutionTimeLimit 0
+$triggers = @()
+$triggers += New-ScheduledTaskTrigger -AtLogOn
+$CIMTriggerClass = Get-CimClass -ClassName MSFT_TaskEventTrigger -Namespace Root/Microsoft/Windows/TaskScheduler:MSFT_TaskEventTrigger
+$trigger = New-CimInstance -CimClass $CIMTriggerClass -ClientOnly
+$trigger.Subscription = 
+@"
+<QueryList><Query Id="0" Path="System"><Select Path="System">*[System[Provider[@Name='Microsoft-Windows-Kernel-Power'] and EventID=566]]</Select></Query></QueryList>
+"@
+$trigger.Enabled = $true
+$trigger.Delay = 'PT5S'
+$triggers += $trigger
+$settings = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -ExecutionTimeLimit 0 -Priority 4
 $settings.CimInstanceProperties.Item('MultipleInstances').Value = 3
 
 function checktask() {
@@ -130,11 +140,11 @@ function checktask() {
 function task() {
     checktask
     if (!$Running) {
-    Register-ScheduledTask -TaskName $taskName -Action $action -Trigger $trigger -Settings $settings
+    Register-ScheduledTask -TaskName $taskName -Action $action -Trigger $triggers -Settings $settings
     schtasks /run /tn "\Apply sRGB to Gamma LUT"
     } else {
     $Running | Stop-Process -Force -ErrorAction Stop
-    Register-ScheduledTask -TaskName $taskName -Action $action -Trigger $trigger -Settings $settings
+    Register-ScheduledTask -TaskName $taskName -Action $action -Trigger $triggers -Settings $settings
     schtasks /run /tn "\Apply sRGB to Gamma LUT"
     Write-Output "Done."
    }
@@ -142,7 +152,7 @@ function task() {
 if ( ($AutoStart -match 'Y') -and ($ReloadCal -match 'Y') ) {
     Write-Output "Adding 'Apply sRGB to Gamma LUT' task to task scheduler..."
     checktask
-    Register-ScheduledTask -TaskName $taskName -Action $action -Trigger $trigger -Settings $settings -RunLevel Highest
+    Register-ScheduledTask -TaskName $taskName -Action $action -Trigger $triggers -Settings $settings -RunLevel Highest
     schtasks /run /tn "\Apply sRGB to Gamma LUT"
     Write-Output "Done."
 } elseif ( $AutoStart -match 'Y' ) {
@@ -151,7 +161,7 @@ if ( ($AutoStart -match 'Y') -and ($ReloadCal -match 'Y') ) {
 } elseif ( $ReloadCal -match 'Y' ) {
     Write-Output "Running HDRGammaFix.exe..."
     $null = checktask
-    $null = Register-ScheduledTask -TaskName $taskName -Action $action -Trigger $trigger -Settings $settings -RunLevel Highest
+    $null = Register-ScheduledTask -TaskName $taskName -Action $action -Trigger $triggers -Settings $settings -RunLevel Highest
     $null = schtasks /run /tn "\Apply sRGB to Gamma LUT"
     $null = & Unregister-ScheduledTask -TaskName $taskName -Confirm:$false
     Write-Output "Done."
