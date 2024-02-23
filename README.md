@@ -45,15 +45,13 @@ The default hotkeys are as follows:
 
    - `Win+Shift+3`
 
-<br>
-
 ## Uninstallation
 
 - Run Uninstall.bat in the "uninstall" folder as administrator, and it should remove the task from task scheduler, if it exists.
 
 - The script (if running) can be closed from the system tray in your taskbar by right-clicking the green "H" icon.
 
-<br>
+<hr>
 
 ## SDR content brightness slider guide
 
@@ -63,7 +61,7 @@ The default hotkeys are as follows:
 
 - Windows 10: https://www.tenforums.com/tutorials/146775-how-change-hdr-sdr-brightness-balance-level-windows-10-a.html
 
-#### After you've set the slider to where you want it, enter the number that pops up when hovering over the slider's button in the setup.
+After you've set the slider to where you want it, enter the number that pops up when hovering over the slider's button in the setup.
 
 ## Windows Color Calibration reload function
 
@@ -71,6 +69,8 @@ If you've used Windows' HDR Calibration app (Windows 11 only) and applied a prof
 
 This can happen after your display goes to sleep mode and wakes up again, or after your PC enters sleep mode and resumes. Reloading Windows' 
 color calibration when applying the gamma transformation will fix this issue without having to open Display settings or Color management.
+
+<hr>
 
 ## Notes/Troubleshooting
 
