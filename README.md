@@ -1,9 +1,9 @@
 # Windows 11 SDR-in-HDR curve transformation from piecewise sRGB to Gamma using AutoHotkey
 
 ## This is a fork of [win11hdr-srgb-to-gamma2.2-icm](https://github.com/dylanraga/win11hdr-srgb-to-gamma2.2-icm) by dylanraga. 
-#### dylanraga's original repo contains a great explanation on what is causing a "washed out" look or raised black levels when viewing SDR or AutoHDR content in Windows' HDR mode, and has some alternative workarounds for the issue.
+**dylanraga's original repo contains a great explanation on what is causing a "washed out" look or raised black levels when viewing SDR or AutoHDR content in Windows' HDR mode, and has some alternative workarounds for the issue.**
 
-#### This fork uses an AutoHotkey script + ArgyllCMS `dispwin` workaround heavily based on [mspeedo](https://github.com/mspeedo)'s .ahk [script](https://github.com/dylanraga/win11hdr-srgb-to-gamma2.2-icm/issues/7), which is based on dylanraga's workarounds.
+**This fork uses an AutoHotkey script + ArgyllCMS `dispwin` workaround heavily based on [mspeedo](https://github.com/mspeedo)'s .ahk [script](https://github.com/dylanraga/win11hdr-srgb-to-gamma2.2-icm/issues/7), which was written using dylanraga's formulas.**
 
 Using AutoHotkey allows fast toggling of the gamma transformation, which is useful because the gamma correction can be detrimental to real HDR content, which do not suffer from the same issue this workaround tackles.
 This method also optionally allows reloading Windows' color calibration with the hotkeys. See [Windows color calibration reload function](https://github.com/Animesh-Does-Code/win11hdr-srgb-to-gamma2.2-ahk?tab=readme-ov-file#windows-color-calibration-reload-function) below for more info.
@@ -12,14 +12,17 @@ This method also optionally allows reloading Windows' color calibration with the
 
 1. Download [HDRGammaFix.zip](https://github.com/Animesh-Does-Code/win11hdr-srgb-to-gamma2.2-ahk/releases/latest/download/HDRGammaFix.zip) from the releases page and extract it to an easily accessible location where it can reside permanently.
 2. Run `SETUP.bat` as administrator.
-   - `SETUP.bat` can also be run without admin permissions, but without the ability to create startup tasks.
+   - `SETUP.bat` can also be run _without admin permissions_, but without the ability to create startup tasks.
 3. Follow the prompts that appear and enter your preferred values.
    - Your SDR content brightness slider value can be found in Windows' settings. For info, go to the [SDR content brightness slider guide](https://github.com/Animesh-Does-Code/win11hdr-srgb-to-gamma2.2-ahk?tab=readme-ov-file#sdr-content-brightness-slider-guide) below.
 4. The script will start running and can be controlled with hotkeys.
    - Use `Win+F1` to disable gamma changes and `Win+F2` to apply them again.
 5. You can also run the script manually from `HDRGammaFix.exe`, but only after the initial setup.
 
-`SETUP.bat` needs to be run again if SDR content brightness value or gamma need to be changed.
+#### Tip:
+
+- `SETUP.bat` needs to be run again if SDR content brightness value or gamma need to be changed.
+  - Running as administrator is **not required** when only changing these two settings.
 
 ### Default Hotkeys
 
@@ -55,7 +58,7 @@ The default hotkeys are as follows:
 
 ## SDR content brightness slider guide
 
-#### Find your SDR content brightness slider:
+**Find your SDR content brightness slider:**
 
 - Windows 11: https://www.elevenforum.com/t/change-hdr-or-sdr-content-brightness-for-hdr-display-in-windows-11.7832/
 

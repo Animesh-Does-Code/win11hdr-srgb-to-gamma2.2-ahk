@@ -7,7 +7,10 @@
 3. The script will start running and can be controlled with hotkeys.
 4. You can also run the script manually from HDRGammaFix.exe, but only after the initial setup.
 
+Tip:
+
 - SETUP.bat needs to be run again if SDR content brightness or gamma needs to be changed.
+   - Running as administrator is *not required* when only changing these two settings.
 
 ## Default Hotkeys
 
