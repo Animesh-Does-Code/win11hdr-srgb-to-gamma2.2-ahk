@@ -33,11 +33,12 @@ path = config
 FileDelete reloadColor
 FileDelete noReload
 
-if (FileExist("gammaval") and FileExist("SDRWhite")) {
-  FileReadLine, whiteLuminance, SDRWhite, 1
+if (FileExist("gammaval") and FileExist("SDRValue")) {
+  FileReadLine, SDRWhite, SDRValue, 1
+  whiteLuminance := (SDRWhite*4)+80
   blackLuminance := 0
   FileReadLine, gamma, gammaval, 1
-  CREATE_LUT_FILE(whiteLuminance,blackLuminance,gamma,path)
+  CREATE_LUT_FILE(whiteLuminance,blackLuminance,gamma,SDRWhite,path)
 }
 
 if (FIleExist("configwithReload")) {
@@ -82,12 +83,13 @@ apply(admin, path) {
   Run, dispwin.exe %path%, , Hide
 }
 
-CREATE_LUT_FILE(whiteLuminance, blackLuminance, gamma, path) {
+CREATE_LUT_FILE(whiteLuminance, blackLuminance, gamma, SDRWhite, path) {
 
 calcurve = 
 (
 CAL    
-
+SDR content brightness: %SDRWhite%
+Gamma: %gamma%
 DESCRIPTOR "w=%whiteLuminance% b=%blackLuminance% g=%gamma%"
 ORIGINATOR "vcgt"
 CREATED "Thu Jun 01 01:41:55 2023"
@@ -121,7 +123,7 @@ calcurve := calcurve "`n" "END_DATA"
 
 FileDelete %path%
 FileAppend % calcurve, %path%
-FileDelete SDRWhite
+FileDelete SDRValue
 FileDelete gammaval
 
 Return

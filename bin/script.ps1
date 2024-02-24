@@ -11,7 +11,7 @@ Please enter your Windows' SDR content brightness slider value (Should be a numb
 (See README for more info)
 "
 } 
-([int]$SDRValue*4)+80 | Out-File $PSScriptRoot\SDRWhite
+$SDRValue | Out-File $PSScriptRoot\SDRValue
 
 $gamma = Read-Host "
 Please enter your preferred Gamma (Commonly 2.2 or 2.4)
@@ -29,8 +29,20 @@ $gamma | Out-File -FilePath $PSScriptRoot\gammaval
 $config = Get-Item $PSScriptRoot\config -ErrorAction SilentlyContinue
 $configwithReload = Get-Item $PSScriptRoot\configwithReload -ErrorAction SilentlyContinue
 if ($config -or $configwithReload) {
+    if ($configwithReload) {
+        $SDRValue = [Linq.Enumerable]::ElementAt([System.IO.File]::ReadLines("$PSScriptRoot\configwithReload"), 1)
+        $gammaval = [Linq.Enumerable]::ElementAt([System.IO.File]::ReadLines("$PSScriptRoot\configwithReload"), 2)
+    } else {
+        $SDRValue = [Linq.Enumerable]::ElementAt([System.IO.File]::ReadLines("$PSScriptRoot\config"), 1)
+        $gammaval = [Linq.Enumerable]::ElementAt([System.IO.File]::ReadLines("$PSScriptRoot\config"), 2)
+    }
     $rerun = Read-Host "
-Setup was already run before, change SDR brightness and gamma values? (Answer 'Yes' or 'No')
+Setup was already run before, current settings:
+
+$SDRValue
+$gammaval
+
+Change SDR content brightness and gamma values? (Enter 'Yes' or 'No')
 "
     if ($rerun -match 'Y') {
     config
