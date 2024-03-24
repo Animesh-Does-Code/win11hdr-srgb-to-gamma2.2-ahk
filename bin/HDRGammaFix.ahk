@@ -92,7 +92,6 @@ SDR content brightness: %SDRWhite%
 Gamma: %gamma%
 DESCRIPTOR "w=%whiteLuminance% b=%blackLuminance% g=%gamma%"
 ORIGINATOR "vcgt"
-CREATED "Thu Jun 01 01:41:55 2023"
 DEVICE_CLASS "DISPLAY"
 COLOR_REP "RGB"
 
