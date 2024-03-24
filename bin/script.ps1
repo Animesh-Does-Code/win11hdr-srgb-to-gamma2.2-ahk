@@ -143,7 +143,7 @@ $settings = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -DontStopIfGoi
 $settings.CimInstanceProperties.Item('MultipleInstances').Value = 3
 
 function checktask() {
-    if ($existingTask -ne $null) {
+    if ($null -ne $existingTask) {
     Write-Host "Removing previous task"
     Unregister-ScheduledTask -TaskName $taskName -Confirm:$false
     }
@@ -162,23 +162,27 @@ function task() {
    }
 }
 if ( ($AutoStart -match 'Y') -and ($ReloadCal -match 'Y') ) {
-    Write-Output "Adding 'Apply sRGB to Gamma LUT' task to task scheduler..."
+    Write-Output "
+Adding 'Apply sRGB to Gamma LUT' task to task scheduler..."
     checktask
     Register-ScheduledTask -TaskName $taskName -Action $action -Trigger $triggers -Settings $settings -RunLevel Highest
     schtasks /run /tn "\Apply sRGB to Gamma LUT"
     Write-Output "Done."
 } elseif ( $AutoStart -match 'Y' ) {
-    Write-Output "Adding 'Apply sRGB to Gamma LUT' task to task scheduler..."
+    Write-Output "
+Adding 'Apply sRGB to Gamma LUT' task to task scheduler..."
     task
 } elseif ( $ReloadCal -match 'Y' ) {
-    Write-Output "Running HDRGammaFix.exe..."
+    Write-Output "
+Running HDRGammaFix.exe..."
     $null = checktask
     $null = Register-ScheduledTask -TaskName $taskName -Action $action -Trigger $triggers -Settings $settings -RunLevel Highest
     $null = schtasks /run /tn "\Apply sRGB to Gamma LUT"
     $null = & Unregister-ScheduledTask -TaskName $taskName -Confirm:$false
     Write-Output "Done."
 } else {
-    Write-Output "Running HDRGammaFix.exe..."
+    Write-Output "
+Running HDRGammaFix.exe..."
     $null = task
     $null = & Unregister-ScheduledTask -TaskName $taskName -Confirm:$false
     Write-Output "Done."
