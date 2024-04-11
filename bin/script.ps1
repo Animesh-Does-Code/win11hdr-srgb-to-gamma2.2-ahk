@@ -1,5 +1,7 @@
 function config() {
     $SDRValue = Read-Host "
+-------------------------------------------------------------------------------------------------
+
 Please enter your Windows' SDR content brightness slider value (Should be a number from 0 to 100)
 (See README for more info)
 "
@@ -37,10 +39,14 @@ if ($config -or $configwithReload) {
         $gammaval = [Linq.Enumerable]::ElementAt([System.IO.File]::ReadLines("$PSScriptRoot\config"), 2)
     }
     $rerun = Read-Host "
+-------------------------------------------------------------------------------------------------
+
 Setup was already run before, current settings:
 
+----------------------------
 $SDRValue
 $gammaval
+----------------------------
 
 Change SDR content brightness and gamma values? (Enter 'Yes' or 'No')
 "
@@ -51,11 +57,21 @@ Change SDR content brightness and gamma values? (Enter 'Yes' or 'No')
     config
 }
 
+$guide = Write-Output "
+------------------------------------------------------------------------------------
+Use Win+F2 to apply gamma conversion and Win+F1 to revert all gamma changes.
+
+Alternatively, Win+Shift+2 (to apply) and Win+Shift+1 (to revert) can also be used.
+------------------------------------------------------------------------------------
+"
+
 $Running = Get-Process HDRGammaFix -ErrorAction SilentlyContinue
 $isAdmin = (New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
 
 if ($isAdmin -ne 'True') {
     Write-Output "
+-------------------------------------------------------------------------------------------------
+
 Warning! SETUP.bat is running without administrator rights, please run as administrator for full functionality.
     "
     $exists = Get-ScheduledTask -TaskName "Apply sRGB to Gamma LUT" -ErrorAction SilentlyContinue
@@ -63,6 +79,7 @@ Warning! SETUP.bat is running without administrator rights, please run as admini
         Write-Output "Restarting existing task to apply any changes...
 "
         schtasks /run /tn "\Apply sRGB to Gamma LUT"
+        $guide
     }
     elseif (!$Running) {
        Write-Output "Running HDRGammaFix.exe..."
@@ -80,13 +97,17 @@ Use hotkey Win+Shift+3 to restart script manually for any changes to take effect
     }  
        & $PSScriptRoot\HDRGammaFix.exe
        Write-Output "Done."
+       $guide
        exit
     }
     Write-Output "Done."
+    $guide
     exit
 }
 
 $ReloadCal = Read-Host "
+-------------------------------------------------------------------------------------------------
+
 Reload Windows color calibration when applying gamma transformation? (Enter 'Yes' or 'No')
 (Recommended when using a Windows HDR Calibration app profile in Windows 11)
 "
@@ -115,6 +136,8 @@ Continuing regular setup...
 }
 
 $AutoStart = Read-Host "
+-------------------------------------------------------------------------------------------------
+
 Enable hotkey script on Windows startup? (Enter 'Yes' or 'No')
 "
     While (!$AutoStart) {
@@ -168,9 +191,11 @@ Adding 'Apply sRGB to Gamma LUT' task to task scheduler..."
     Register-ScheduledTask -TaskName $taskName -Action $action -Trigger $triggers -Settings $settings -RunLevel Highest
     schtasks /run /tn "\Apply sRGB to Gamma LUT"
     Write-Output "Done."
+    $guide
 } elseif ( $AutoStart -match 'Y' ) {
     Write-Output "
 Adding 'Apply sRGB to Gamma LUT' task to task scheduler..."
+    $guide
     task
 } elseif ( $ReloadCal -match 'Y' ) {
     Write-Output "
@@ -180,10 +205,12 @@ Running HDRGammaFix.exe..."
     $null = schtasks /run /tn "\Apply sRGB to Gamma LUT"
     $null = & Unregister-ScheduledTask -TaskName $taskName -Confirm:$false
     Write-Output "Done."
+    $guide
 } else {
     Write-Output "
 Running HDRGammaFix.exe..."
     $null = task
     $null = & Unregister-ScheduledTask -TaskName $taskName -Confirm:$false
     Write-Output "Done."
+    $guide
 }
