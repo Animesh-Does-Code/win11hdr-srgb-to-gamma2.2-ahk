@@ -75,6 +75,22 @@ color calibration when applying the gamma transformation will fix this issue wit
 
 <hr>
 
+<h1>Extra</h1>
+
+For reference, below is a table with Windows SDR content brightness slider values and their corresponding SDR white nit values, in case you want to set it up with an SDR white of exactly 100 or 200 nits for example. Credit goes to dylanraga's original repo.
+
+## Windows SDR content brightness table
+
+| SDR brightness value | SDR white screen luminance |
+| -------------------- | -------------------------- |
+| 0                    | 80 nits                    |
+| 5                    | 100 nits                   |
+| 10                   | 120 nits                   |
+| 30                   | 200 nits                   |
+| 55                   | 300 nits                   |
+| 80                   | 400 nits                   |
+| 100                  | 480 nits                   |
+
 ## Notes/Troubleshooting
 
 - The gamma ramp correction will persist when toggling HDR (including via the keyboard shortcut), making SDR appear darker. When disabling HDR, make sure to revert the gamma correction using the hotkey. Likewise, when re-enabling HDR, you have to re-apply the gamma correction again.
