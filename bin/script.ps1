@@ -16,13 +16,13 @@ Please enter your Windows' SDR content brightness slider value (Should be a numb
 $SDRValue | Out-File $PSScriptRoot\SDRValue
 
 $gamma = Read-Host "
-Please enter your preferred Gamma (Commonly 2.2 or 2.4)
+Please enter your preferred Gamma (Commonly 2.2 (Recommended) or 2.4)
 "
 While (!$gamma) {
     Write-Output "
 No value was entered, please try again"
     $gamma = Read-Host "
-Please enter your preferred Gamma (Commonly 2.2 or 2.4)
+Please enter your preferred Gamma (Commonly 2.2 (Recommended) or 2.4)
 "
 }
 $gamma | Out-File -FilePath $PSScriptRoot\gammaval
