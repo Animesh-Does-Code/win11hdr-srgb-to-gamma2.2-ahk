@@ -67,6 +67,8 @@ Alternatively, Win+Shift+2 (to apply) and Win+Shift+1 (to revert) can also be us
 
 $Running = Get-Process HDRGammaFix -ErrorAction SilentlyContinue
 $isAdmin = (New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
+$taskName = "Apply sRGB to Gamma LUT"
+$existingTask = Get-ScheduledTask -TaskName $taskName -ErrorAction SilentlyContinue
 
 if ($isAdmin -ne 'True') {
     Write-Output "
@@ -74,12 +76,10 @@ if ($isAdmin -ne 'True') {
 
 Warning! SETUP.bat is running without administrator rights, please run as administrator for full functionality.
     "
-    $exists = Get-ScheduledTask -TaskName "Apply sRGB to Gamma LUT" -ErrorAction SilentlyContinue
-    if ($exists) {
+    if ($existingTask) {
         Write-Output "Restarting existing task to apply any changes...
 "
-        schtasks /run /tn "\Apply sRGB to Gamma LUT"
-        $guide
+        $null = schtasks /run /tn "\Apply sRGB to Gamma LUT"
     }
     elseif (!$Running) {
        Write-Output "Running HDRGammaFix.exe..."
@@ -147,8 +147,6 @@ No value was entered, please try again"
 Enable hotkey script on Windows startup? (Enter 'Yes' or 'No')
 "
 }
-$taskName = "Apply sRGB to Gamma LUT"
-$existingTask = Get-ScheduledTask -TaskName $taskName -ErrorAction SilentlyContinue
 $exeFile = "HDRGammaFix.exe"
 $action = New-ScheduledTaskAction -Execute $exeFile -WorkingDirectory $PSScriptRoot
 $triggers = @()
@@ -167,7 +165,6 @@ $settings.CimInstanceProperties.Item('MultipleInstances').Value = 3
 
 function checktask() {
     if ($null -ne $existingTask) {
-    Write-Host "Removing previous task"
     Unregister-ScheduledTask -TaskName $taskName -Confirm:$false
     }
 }
@@ -175,12 +172,12 @@ function checktask() {
 function task() {
     checktask
     if (!$Running) {
-    Register-ScheduledTask -TaskName $taskName -Action $action -Trigger $triggers -Settings $settings
-    schtasks /run /tn "\Apply sRGB to Gamma LUT"
+    $null = Register-ScheduledTask -TaskName $taskName -Action $action -Trigger $triggers -Settings $settings
+    $null = schtasks /run /tn "\Apply sRGB to Gamma LUT"
     } else {
     $Running | Stop-Process -Force -ErrorAction Stop
-    Register-ScheduledTask -TaskName $taskName -Action $action -Trigger $triggers -Settings $settings
-    schtasks /run /tn "\Apply sRGB to Gamma LUT"
+    $null = Register-ScheduledTask -TaskName $taskName -Action $action -Trigger $triggers -Settings $settings
+    $null = schtasks /run /tn "\Apply sRGB to Gamma LUT"
     Write-Output "Done."
    }
 }
@@ -188,15 +185,15 @@ if ( ($AutoStart -match 'Y') -and ($ReloadCal -match 'Y') ) {
     Write-Output "
 Adding 'Apply sRGB to Gamma LUT' task to task scheduler..."
     checktask
-    Register-ScheduledTask -TaskName $taskName -Action $action -Trigger $triggers -Settings $settings -RunLevel Highest
-    schtasks /run /tn "\Apply sRGB to Gamma LUT"
+    $null = Register-ScheduledTask -TaskName $taskName -Action $action -Trigger $triggers -Settings $settings -RunLevel Highest
+    $null = schtasks /run /tn "\Apply sRGB to Gamma LUT"
     Write-Output "Done."
     $guide
 } elseif ( $AutoStart -match 'Y' ) {
     Write-Output "
 Adding 'Apply sRGB to Gamma LUT' task to task scheduler..."
-    $guide
     task
+    $guide
 } elseif ( $ReloadCal -match 'Y' ) {
     Write-Output "
 Running HDRGammaFix.exe..."
