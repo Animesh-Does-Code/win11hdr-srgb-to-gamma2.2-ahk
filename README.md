@@ -95,6 +95,7 @@ For reference, below is a table with Windows SDR content brightness slider value
 
 - The gamma ramp correction will persist when toggling HDR (including via the keyboard shortcut), making SDR appear darker. When disabling HDR, make sure to revert the gamma correction using the hotkey. Likewise, when re-enabling HDR, you have to re-apply the gamma correction again.
 - If you have an NVIDIA GPU, make sure the NVCP desktop color settings is set to "Accurate" or "Enhanced" mode; the correction will not apply in "Reference" mode.
+- If the gamma correction doesn't apply or applies for only a moment, check if you have DisplayCal or other similar software running in the background and close them. This should allow the changes to be applied.
 - Pixel values above diffuse SDR white are untouched; a soft shoulder was added toward unity to blend the curve mapping with HDR values (Not done by me, all credit goes to [dylanraga](https://github.com/dylanraga))
 
 <hr>
