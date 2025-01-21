@@ -47,6 +47,7 @@ if (FIleExist("configwithReload")) {
   admin := ""
 }
 
+;**The line below applies the gamma fix at script startup. Delete it if you don't want this behavior.**
 apply(admin, path)
 
 ;------------------ LUT CALIBRATION CURVES HOTKEYS----------------------------------------
