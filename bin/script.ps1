@@ -139,12 +139,14 @@ $AutoStart = Read-Host "
 -------------------------------------------------------------------------------------------------
 
 Enable hotkey script on Windows startup? (Enter 'Yes' or 'No')
+('No' will disable the startup task if installed previously)
 "
     While (!$AutoStart) {
     Write-Output "
 No value was entered, please try again"
     $AutoStart = Read-Host "
 Enable hotkey script on Windows startup? (Enter 'Yes' or 'No')
+('No' will disable the startup task if installed previously)
 "
 }
 $exeFile = "HDRGammaFix.exe"
