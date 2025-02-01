@@ -180,8 +180,8 @@ function task() {
     $Running | Stop-Process -Force -ErrorAction Stop
     $null = Register-ScheduledTask -TaskName $taskName -Action $action -Trigger $triggers -Settings $settings
     $null = schtasks /run /tn "\Apply sRGB to Gamma LUT"
-    Write-Output "Done."
    }
+    Write-Output "Done."
 }
 if ( ($AutoStart -match 'Y') -and ($ReloadCal -match 'Y') ) {
     Write-Output "
