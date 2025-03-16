@@ -105,36 +105,6 @@ Use hotkey Win+Shift+3 to restart script manually for any changes to take effect
     exit
 }
 
-$ReloadCal = Read-Host "
--------------------------------------------------------------------------------------------------
-
-Reload Windows color calibration when applying gamma transformation? (Enter 'Yes' or 'No')
-(Recommended when using a Windows HDR Calibration app profile in Windows 11)
-"
-While (!$ReloadCal) {
-    Write-Output "
-No value was entered, please try again"
-    $ReloadCal = Read-Host "
-Reload Windows color calibration when applying gamma transformation? (Enter 'Yes' or 'No')
-(Recommended when using a Windows HDR Calibration app profile in Windows 11)
-"
-}
-if ($ReloadCal -match 'Y') {
-    Out-File $PSScriptRoot\reloadColor
-    Write-Output "
-Reloading Windows color calibration requires running the .exe script as administrator when running it manually.
-If the hotkey script is enabled on startup, it will run as administrator by default, without triggering UAC."
-    Write-Host -NoNewLine '
-Press any key to continue setup...
-'
-    $null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown')
-} else {
-    Out-File $PSScriptRoot\noReload
-    Write-Output "
-Continuing regular setup...
-"
-}
-
 $AutoStart = Read-Host "
 -------------------------------------------------------------------------------------------------
 
@@ -149,8 +119,53 @@ Enable hotkey script on Windows startup? (Enter 'Yes' or 'No')
 ('No' will disable the startup task if installed previously)
 "
 }
+    if ( $AutoStart -match 'Y' ) {
+        $ReloadCal = Read-Host "
+-------------------------------------------------------------------------------------------------
+
+Re-apply gamma correction after sleep mode or display sleep? (Enter 'Yes' or 'No')
+(This will also reload Windows color calibration to mitigate HDR color profile issues)
+"
+        While (!$ReloadCal) {
+            Write-Output "
+No value was entered, please try again"
+            $ReloadCal = Read-Host "
+Re-apply gamma correction after sleep mode or display sleep? (Enter 'Yes' or 'No')
+(This will also reload Windows color calibration to mitigate HDR color profile issues)
+"
+        }
+        if ($ReloadCal -match 'Y') {
+            Out-File $PSScriptRoot\reloadColor
+        }
+    } else {
+        $ReloadCal = Read-Host "
+-------------------------------------------------------------------------------------------------
+
+Reload Windows color calibration when applying gamma transformation? (Enter 'Yes' or 'No')
+(Recommended when using a Windows HDR Calibration app profile in Windows 11)
+"
+        While (!$ReloadCal) {
+            Write-Output "
+No value was entered, please try again"
+            $ReloadCal = Read-Host "
+Reload Windows color calibration when applying gamma transformation? (Enter 'Yes' or 'No')
+(Recommended when using a Windows HDR Calibration app profile in Windows 11)
+"
+        }
+        if ( $ReloadCal -match 'Y' ) {
+            Out-File $PSScriptRoot\reloadColor
+            Write-Output "
+Reloading Windows color calibration requires running the .exe script as administrator when running it manually."
+            Write-Host -NoNewLine '
+Press any key to continue setup...
+'
+            $null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown')
+        }
+    }
+
 $exeFile = "HDRGammaFix.exe"
 $action = New-ScheduledTaskAction -Execute $exeFile -WorkingDirectory $PSScriptRoot
+$triggerStartup = New-ScheduledTaskTrigger -AtLogOn
 $triggers = @()
 $triggers += New-ScheduledTaskTrigger -AtLogOn
 $CIMTriggerClass = Get-CimClass -ClassName MSFT_TaskEventTrigger -Namespace Root/Microsoft/Windows/TaskScheduler:MSFT_TaskEventTrigger
@@ -174,26 +189,32 @@ function checktask() {
 function task() {
     checktask
     if (!$Running) {
-    $null = Register-ScheduledTask -TaskName $taskName -Action $action -Trigger $triggers -Settings $settings
+    $null = Register-ScheduledTask -TaskName $taskName -Action $action -Trigger $triggerStartup -Settings $settings
     $null = schtasks /run /tn "\Apply sRGB to Gamma LUT"
     } else {
     $Running | Stop-Process -Force -ErrorAction Stop
-    $null = Register-ScheduledTask -TaskName $taskName -Action $action -Trigger $triggers -Settings $settings
+    $null = Register-ScheduledTask -TaskName $taskName -Action $action -Trigger $triggerStartup -Settings $settings
+    Write-Output "
+Running HDRGammaFix.exe.."
     $null = schtasks /run /tn "\Apply sRGB to Gamma LUT"
+    Write-Output "
+Done."
    }
-    Write-Output "Done."
 }
 if ( ($AutoStart -match 'Y') -and ($ReloadCal -match 'Y') ) {
     Write-Output "
-Adding 'Apply sRGB to Gamma LUT' task to task scheduler..."
+Adding startup task 'Apply sRGB to Gamma LUT' to task scheduler..."
     checktask
     $null = Register-ScheduledTask -TaskName $taskName -Action $action -Trigger $triggers -Settings $settings -RunLevel Highest
+    Write-Output "
+Running HDRGammaFix.exe.."
     $null = schtasks /run /tn "\Apply sRGB to Gamma LUT"
-    Write-Output "Done."
+    Write-Output "
+Done."
     $guide
 } elseif ( $AutoStart -match 'Y' ) {
     Write-Output "
-Adding 'Apply sRGB to Gamma LUT' task to task scheduler..."
+Adding startup task 'Apply sRGB to Gamma LUT' to task scheduler..."
     task
     $guide
 } elseif ( $ReloadCal -match 'Y' ) {
@@ -203,13 +224,15 @@ Running HDRGammaFix.exe..."
     $null = Register-ScheduledTask -TaskName $taskName -Action $action -Trigger $triggers -Settings $settings -RunLevel Highest
     $null = schtasks /run /tn "\Apply sRGB to Gamma LUT"
     $null = & Unregister-ScheduledTask -TaskName $taskName -Confirm:$false
-    Write-Output "Done."
+    Write-Output "
+Done."
     $guide
 } else {
     Write-Output "
 Running HDRGammaFix.exe..."
     $null = task
     $null = & Unregister-ScheduledTask -TaskName $taskName -Confirm:$false
-    Write-Output "Done."
+    Write-Output "
+Done."
     $guide
 }
