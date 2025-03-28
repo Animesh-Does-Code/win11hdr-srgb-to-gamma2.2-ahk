@@ -34,7 +34,7 @@ The default hotkeys are as follows:
 
 3. Restart script: (Used for reloading SDR nits and gamma value changes after setup)
 
-- Win+Shift+3
+ - Win+Shift+4
 
 
 ## SDR content brightness slider guide:

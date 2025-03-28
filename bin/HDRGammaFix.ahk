@@ -41,6 +41,10 @@ if (FileExist("gammaval") and FileExist("SDRValue")) {
   CREATE_LUT_FILE(whiteLuminance,blackLuminance,gamma,SDRWhite,path)
 }
 
+FileReadLine, str, %path%, 2
+word_array := StrSplit(str, A_Space, "")
+SDRSliderNits := (word_array[4]*4)+80
+
 if (FIleExist("configwithReload")) {
   admin := A_IsAdmin
 } else {
@@ -48,7 +52,7 @@ if (FIleExist("configwithReload")) {
 }
 
 ;**The line below applies the gamma fix at script startup. Delete it if you don't want this behavior.**
-apply(admin, path)
+apply(admin, path, SDRSliderNits)
 
 ;------------------ LUT CALIBRATION CURVES HOTKEYS----------------------------------------
 
@@ -59,10 +63,10 @@ Return
 
 #F2::
 #+2::
-  apply(admin, path)
+  apply(admin, path, SDRSliderNits)
 Return
 
-#+3::
+#+4::
   Reload
 
 ;------------------ LUT CALIBRATION CURVES FUNCTIONS -------------------------------------
@@ -76,12 +80,13 @@ ResetCalibrationCurve(admin) {
 }
 Return
 
-apply(admin, path) {
+apply(admin, path, SDRSliderNits) {
   if (admin) {
   Run, schtasks /run /tn "\Microsoft\Windows\WindowsColorSystem\Calibration Loader", , Hide
   sleep, 100
  }
   Run, dispwin.exe %path%, , Hide
+  Run, set_sdrwhite.exe 0 %SDRSliderNits%, , Hide
 }
 
 CREATE_LUT_FILE(whiteLuminance, blackLuminance, gamma, SDRWhite, path) {
