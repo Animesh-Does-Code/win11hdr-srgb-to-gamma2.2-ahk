@@ -3,20 +3,18 @@
 ## This is a fork of [win11hdr-srgb-to-gamma2.2-icm](https://github.com/dylanraga/win11hdr-srgb-to-gamma2.2-icm) by dylanraga. 
 **dylanraga's original repo contains a great explanation on what is causing a "washed out" look or raised black levels when viewing SDR or AutoHDR content in Windows' HDR mode, and has some alternative workarounds for the issue.**
 
-**This fork uses an AutoHotkey script + ArgyllCMS `dispwin` workaround heavily based on [mspeedo](https://github.com/mspeedo)'s .ahk [script](https://github.com/dylanraga/win11hdr-srgb-to-gamma2.2-icm/issues/7), which was written using dylanraga's formulas.**
-
-Using AutoHotkey allows fast toggling of the gamma transformation, which is useful because the gamma correction can be detrimental to real HDR content, which do not suffer from the same issue this workaround tackles.
-This method also optionally allows reloading Windows' color calibration with the hotkeys. See [Windows color calibration reload function](https://github.com/Animesh-Does-Code/win11hdr-srgb-to-gamma2.2-ahk?tab=readme-ov-file#windows-color-calibration-reload-function) below for more info.
+**This fork uses an AutoHotkey script + ArgyllCMS `dispwin` workaround heavily based on [mspeedo](https://github.com/mspeedo)'s .ahk [script](https://github.com/dylanraga/win11hdr-srgb-to-gamma2.2-icm/issues/7), which was written using dylanraga's formulas. Additionally, it uses [ledoge](https://github.com/ledoge)'s `set_sdrwhite` tool included in their [set_maxtml](https://github.com/ledoge/set_maxtml) tool's GitHub release to automatically set SDR content brightness using hotkeys.**
 
 ## Installation and Usage:
 
-1. Download [HDRGammaFix.zip](https://github.com/Animesh-Does-Code/win11hdr-srgb-to-gamma2.2-ahk/releases/latest/download/HDRGammaFix.zip) from the releases page and extract it to an easily accessible location where it can reside permanently.
+1. Download either [HDRGammaFix.zip](https://github.com/Animesh-Does-Code/win11hdr-srgb-to-gamma2.2-ahk/releases/latest/download/HDRGammaFix.zip) or [HDRGammaFix_AutoHDR.zip](https://github.com/Animesh-Does-Code/win11hdr-srgb-to-gamma2.2-ahk/releases/latest/download/HDRGammaFix_AutoHDR.zip) from the releases page and extract it to an easily accessible location where it can reside permanently.
+   - The HDRGammaFix_AutoHDR variant contains a separate hotkey to fix AutoHDR gamma.
 2. Run `SETUP.bat` as administrator.
    - `SETUP.bat` can also be run _without admin permissions_, but 'run at startup' tasks cannot be created.
 3. Follow the prompts that appear and enter your preferred values.
    - Your SDR content brightness slider value can be found in Windows' HDR settings. For extra info, go to the [SDR content brightness slider guide](https://github.com/Animesh-Does-Code/win11hdr-srgb-to-gamma2.2-ahk?tab=readme-ov-file#sdr-content-brightness-slider-guide) below.
 4. The script will start running and can be controlled with hotkeys.
-   - Use `Win+F1` to disable gamma changes and `Win+F2` to apply them again.
+   - Use `Win+F1` to disable gamma changes and `Win+F2` to apply them again. `Win+F3` applies AutoHDR specific gamma correction in the AutoHDR variant.
 5. You can also run the script manually from `HDRGammaFix.exe`, but only after the initial setup.
 
 #### Tip:
@@ -44,9 +42,17 @@ The default hotkeys are as follows:
      
    - `Win+Shift+1`
 
-#### 3. Restart script: (Used for reloading SDR nits and gamma value changes after setup)
+#### 3. Apply AutoHDR gamma transformation (AutoHDR variant only):
 
+   - `Win+F3`
+     
+     or
+     
    - `Win+Shift+3`
+
+#### 4. Restart script: (Used for reloading SDR nits and gamma value changes after setup)
+
+   - `Win+Shift+4`
 
 ## Uninstallation
 
@@ -55,6 +61,11 @@ The default hotkeys are as follows:
 - The script (if running) can be closed from the system tray in your taskbar by right-clicking the green "H" icon.
 
 <hr>
+
+## Why use this?
+
+Using AutoHotkey allows fast toggling of the gamma transformation, which is useful because the gamma correction can be detrimental to real HDR content, which do not suffer from the same issue this workaround tackles.
+This method also optionally allows reloading Windows' color calibration with the hotkeys. See [Windows color calibration reload function](https://github.com/Animesh-Does-Code/win11hdr-srgb-to-gamma2.2-ahk?tab=readme-ov-file#windows-color-calibration-reload-function) below for more info.
 
 ## SDR content brightness slider guide
 
@@ -94,10 +105,11 @@ For reference, below is a table with Windows SDR content brightness slider value
 ## Notes/Troubleshooting
 
 - The gamma ramp correction will persist when toggling HDR (including via the keyboard shortcut), making SDR appear darker. When disabling HDR, make sure to revert the gamma correction using the hotkey. Likewise, when re-enabling HDR, you have to re-apply the gamma correction again.
+- On systems with multiple monitors, the gamma correction might not apply to the correct monitor. Setting the monitor you want the gamma correction to apply to as the "main" monitor in Windows settings might help, but I can't confirm since I do not currently have a multi-monitor setup.
 - If you have an NVIDIA GPU, make sure the NVCP desktop color settings is set to "Accurate" or "Enhanced" mode; the correction will not apply in "Reference" mode.
 - If the gamma correction doesn't apply or applies for only a moment, check if you have DisplayCal or other similar software running in the background and close them. This should allow the changes to be applied.
 - Pixel values above diffuse SDR white are untouched; a soft shoulder was added toward unity to blend the curve mapping with HDR values (Not done by me, all credit goes to [dylanraga](https://github.com/dylanraga))
 
 <hr>
 
-<small><em> This workaround uses [ArgyllCMS'](https://www.argyllcms.com/) `dispwin` utility to apply the gamma correction and [AutoHotkey](https://www.autohotkey.com/) to run the script.</em></small>
+<small><em> This workaround uses [ArgyllCMS'](https://www.argyllcms.com/) `dispwin` utility to apply the gamma correction and [AutoHotkey](https://www.autohotkey.com/) to run the script. Additionally, it uses `set_sdrwhite` from ledoge's [set_maxtml](https://github.com/ledoge/set_maxtml) GitHub repo to change SDR content brightness on-the-fly.</em></small>
