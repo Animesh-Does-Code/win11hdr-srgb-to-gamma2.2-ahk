@@ -96,11 +96,13 @@ Use hotkey Win+Shift+3 to restart script manually for any changes to take effect
        exit
     }  
        & $PSScriptRoot\HDRGammaFix.exe
-       Write-Output "Done."
+       Write-Output "
+Done."
        $guide
        exit
     }
-    Write-Output "Done."
+    Write-Output "
+Done."
     $guide
     exit
 }
