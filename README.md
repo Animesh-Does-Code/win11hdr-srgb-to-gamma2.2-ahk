@@ -14,7 +14,7 @@
 3. Follow the prompts that appear and enter your preferred values.
    - Your SDR content brightness slider value can be found in Windows' HDR settings. For extra info, go to the [SDR content brightness slider guide](https://github.com/Animesh-Does-Code/win11hdr-srgb-to-gamma2.2-ahk?tab=readme-ov-file#sdr-content-brightness-slider-guide) below.
 4. The script will start running and can be controlled with hotkeys.
-   - Use `Win+F1` to disable gamma changes and `Win+F2` to apply them again. `Win+F3` applies AutoHDR specific gamma correction in the AutoHDR variant.
+   - Use `Win+F1` to disable gamma changes and `Win+F2` to apply them again. `Win+F3` applies AutoHDR specific gamma correction in the AutoHDR variant, only use this with AutoHDR content like supported games.
 5. You can also run the script manually from `HDRGammaFix.exe`, but only after the initial setup.
 
 #### Tip:
