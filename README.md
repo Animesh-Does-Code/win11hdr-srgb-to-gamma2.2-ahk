@@ -105,7 +105,7 @@ For reference, below is a table with Windows SDR content brightness slider value
 ## Notes/Troubleshooting
 
 - The gamma ramp correction will persist when toggling HDR (including via the keyboard shortcut), making SDR appear darker. When disabling HDR, make sure to revert the gamma correction using the hotkey. Likewise, when re-enabling HDR, you have to re-apply the gamma correction again.
-- On systems with multiple monitors, the gamma correction might not apply to the correct monitor. Setting the monitor you want the gamma correction to apply to as the "main" monitor in Windows settings might help, but I can't confirm since I do not currently have a multi-monitor setup.
+- On systems with multiple monitors, the gamma correction might not apply to the correct monitor. See [this open issue](https://github.com/Animesh-Does-Code/win11hdr-srgb-to-gamma2.2-ahk/issues/3) for workarounds and discussion. Thanks to [ZacharyHu0](https://github.com/ZacharyHu0) for the tutorial.
 - If you have an NVIDIA GPU, make sure the NVCP desktop color settings is set to "Accurate" or "Enhanced" mode; the correction will not apply in "Reference" mode.
 - If the gamma correction doesn't apply or applies for only a moment, check if you have DisplayCal or other similar software running in the background and close them. This should allow the changes to be applied.
 - Pixel values above diffuse SDR white are untouched; a soft shoulder was added toward unity to blend the curve mapping with HDR values (Not done by me, all credit goes to [dylanraga](https://github.com/dylanraga))
