@@ -72,11 +72,11 @@ $taskName = "Apply sRGB to Gamma LUT"
 $existingTask = Get-ScheduledTask -TaskName $taskName -ErrorAction SilentlyContinue
 
 if ($isAdmin -ne 'True') {
-    Write-Output "
+    Write-Host "
 -------------------------------------------------------------------------------------------------
 
 Warning! SETUP.bat is running without administrator rights, please run as administrator for full functionality.
-    "
+    " -ForegroundColor Yellow
     if ($existingTask) {
         Write-Output "Restarting existing task to apply any changes...
 "
@@ -90,10 +90,10 @@ Warning! SETUP.bat is running without administrator rights, please run as admini
        try {
        $Running | Stop-Process -Force -ErrorAction Stop
     } catch {
-        Write-Output "
+        Write-Host "
 Failed! Couldn't restart HDRGammaFix.exe since it was running as administrator! 
-Use hotkey Win+Shift+3 to restart script manually for any changes to take effect.
-"
+Use hotkey Win+Shift+4 to restart script manually for any changes to take effect.
+" -ForegroundColor Yellow
        exit
     }  
        & $PSScriptRoot\HDRGammaFix.exe

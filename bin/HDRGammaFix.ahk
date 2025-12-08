@@ -73,7 +73,7 @@ Return
 
 ResetCalibrationCurve(admin) {
   if (admin) {
-  Run, schtasks /run /tn "\Microsoft\Windows\WindowsColorSystem\Calibration Loader", , Hide
+  RunWait, schtasks /run /tn "\Microsoft\Windows\WindowsColorSystem\Calibration Loader", , Hide
   }
   clear = -c
   Run, dispwin.exe %clear%, , Hide
@@ -82,8 +82,7 @@ Return
 
 apply(admin, path, SDRSliderNits) {
   if (admin) {
-  Run, schtasks /run /tn "\Microsoft\Windows\WindowsColorSystem\Calibration Loader", , Hide
-  sleep, 100
+  RunWait, schtasks /run /tn "\Microsoft\Windows\WindowsColorSystem\Calibration Loader", , Hide
  }
   Run, dispwin.exe %path%, , Hide
   Run, set_sdrwhite.exe 0 %SDRSliderNits%, , Hide
