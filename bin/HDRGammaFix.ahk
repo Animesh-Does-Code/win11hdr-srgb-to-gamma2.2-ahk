@@ -76,7 +76,7 @@ ResetCalibrationCurve(admin) {
   RunWait, schtasks /run /tn "\Microsoft\Windows\WindowsColorSystem\Calibration Loader", , Hide
   }
   clear = -c
-  Run, dispwin.exe %clear%, , Hide
+  RunWait, dispwin.exe %clear%, , Hide
 }
 Return
 
@@ -84,8 +84,8 @@ apply(admin, path, SDRSliderNits) {
   if (admin) {
   RunWait, schtasks /run /tn "\Microsoft\Windows\WindowsColorSystem\Calibration Loader", , Hide
  }
-  Run, dispwin.exe %path%, , Hide
-  Run, set_sdrwhite.exe 0 %SDRSliderNits%, , Hide
+  RunWait, set_sdrwhite.exe 0 %SDRSliderNits%, , Hide
+  RunWait, dispwin.exe %path%, , Hide
 }
 
 CREATE_LUT_FILE(whiteLuminance, blackLuminance, gamma, SDRWhite, path) {
